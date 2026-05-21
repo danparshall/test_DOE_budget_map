@@ -25,6 +25,7 @@ Per-project configuration the skills read at runtime. Update only when the proje
 
 ## Recent sessions
 
+- **2026-05-21** — `20260521_fy27-bib-ingest`: ingested 3 FY27 BiB docs (incl. OCR fallback for custom-font PDF), built T1 (`data/fy27_summary_by_org.csv`, 76 rows) + T2 (`data/fy27_lab_summary.csv`, 94 rows) + T3 (`data/fy27_lab_by_office.csv`, 347 rows) all reconciled to source totals, produced first-cut `budget_map_v0.md`. ~29 commits. §7 issue composed but not filed. See `docs/active/20260521_fy27-bib-papers/convos/20260521_fy27-bib-ingest.md`.
 - **2026-05-21** — `20260521_fy27-bib-papers`: setup + naming agreement + Lab Tables URL discovery (plural form). Blocked on energy.gov sandbox allow-list propagation. Fresh chat required to ingest the three FY27 BiB starter docs. See `docs/active/20260521_fy27-bib-papers/RESEARCH_LOG.md`.
 - **2026-05-21** — `20260521_fy26-mapping-scope`: scoped FY26 budget map (post-reorg, DOE-only, office→program→lab, $49.1B total); discovered DOE Nov-2025 reorganization affects office axis; corrected source plan (FY27 BiB, not FY26 BiB); verified v1 schema against Argonne sample. Initial workflow error: opened a branch before noticing `main_only` mode — deleted and moved to main. See `docs/active/20260521_fy26-mapping-scope/RESEARCH_LOG.md`.
 
