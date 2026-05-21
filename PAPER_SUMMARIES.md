@@ -131,3 +131,99 @@ Protocol B (institutional) and Protocol A (academic) summaries for documents in 
 - The Step 2 "Verify the extraction is reasonable: check the first ~20 lines" rule worked correctly here — the garbled extraction was visible in the first chunk and we caught it before writing the summary. The rule is doing its job; what's missing is the next step's documented fallback path.
 
 ---
+
+### DOE FY 2027 Congressional Justification — Laboratory Tables
+
+- Institution: U.S. Department of Energy, Office of the Chief Financial Officer (OCFO)
+- Date: April 2026
+- File: `doe_fy27LaboratoryTables_2026.pdf`
+- Source: <https://www.energy.gov/documents/doe-fy-2027-laboratory-tables>
+- Pages: 124
+- DOE document ID: DOE/CF-0229
+- Extraction note: pdftotext extracted cleanly (unlike doc #2, which required OCR fallback). The Laboratory Tables PDF uses standard fonts with proper Unicode mapping.
+
+**(a) What the report argues** — Like the Summary by Organization, this is a reference companion to the BiB and the per-volume justifications. It presents the *cross-cut* view: for each of ~125 DOE labs, plants, and installations (LPIs), it shows the FY25 enacted / FY26 enacted / FY27 request, broken down by the originating DOE program/office. Where the Summary by Organization answers "how much does each office get," the Laboratory Tables answer "where does each lab's money come from." Together with the BiB, these are the three FY27 release-set documents an analyst needs to triangulate DOE money flows.
+
+The document also makes one **methodological point inline** that affects every downstream comparison:
+
+> *"The numbers depicted in this document represent the gross level of DOE budget authority for the years displayed. The figures include discretionary and supplemental funding. They do not consider revenues/receipts, use of prior year balances, deferrals, rescissions, or other adjustments appropriated as offsets to the DOE appropriations by the Congress."*
+
+This is why the **Total by Lab, Plant, and Installation** ($61,901,062k FY27) does not match the **BiB topline discretionary** ($53,912,977k FY27). The difference (~$8.0B) is the sum of WFTC mandatory supplements, offsets, receipts, prior-year balances, and rescissions that net out of the discretionary figure. Any budget-map artifact that mixes lab-level data with office-level discretionary numbers has to reconcile gross-vs-net explicitly.
+
+**(b) Document type, methods, and findings** —
+
+- **Document provenance:** Annual lab-level companion to the FY27 Congressional Justification; DOE/CF-0229. Format is one table per LPI, with sub-program rows under each office subtotal. Includes all NNSA labs, Office of Science labs, EM sites, SPR sites, Power Marketing Administration offices, and various Site/Field/Operations offices.
+
+- **Headline numerical claims:**
+  - **Total by Lab, Plant, and Installation FY27 request:** **$61,901,062k = $61.90B** (gross BA).
+  - Compared to FY26 enacted $53,821,313k: +$8.08B / +15%.
+  - The +15% gross-level growth is larger than the +10% net-discretionary growth in the BiB, reflecting bigger movements in the supplements/offsets that don't cancel evenly.
+
+- **The Science-vs-NNSA story at lab level** (most readable form of the BiB/SummaryByOrg narrative):
+  - **NNSA-heavy labs and sites (all UP):**
+    - Los Alamos National Laboratory: $5.13B FY26 → **$6.75B FY27 (+32%)**
+    - Sandia National Laboratories: $3.21B → $3.98B (+24%)
+    - Lawrence Livermore National Laboratory: $2.65B → $3.20B (+21%)
+    - Y-12 National Security Complex: $2.42B → $2.55B (+5%)
+    - Kansas City National Security Complex: $1.59B → $2.18B (+37%)
+    - Nevada National Security Site: $0.85B → $1.38B (+63%)
+    - Pantex Plant: $1.18B → $1.36B (+15%)
+    - NNSA Albuquerque Complex: $1.29B → $1.09B (−15%) — the one NNSA downward exception
+    - Naval Reactors Facility: $0.68B → $0.96B (+41%)
+    - Savannah River Site (EM-heavy but with NNSA tritium operations): $3.43B → **$4.73B (+38%)**
+  - **Office-of-Science-dominated labs (all DOWN):**
+    - Argonne National Laboratory: $910M → **$754M (−17%)**
+    - Lawrence Berkeley National Laboratory: $1,034M → **$831M (−20%)**
+    - Brookhaven National Laboratory: $741M → **$644M (−13%)**
+    - Oak Ridge National Laboratory: $2,215M → **$1,860M (−16%)**
+    - Pacific Northwest National Laboratory: $776M → **$619M (−20%)**
+    - SLAC National Accelerator Laboratory: $621M → **$481M (−22%)**
+    - Thomas Jefferson National Accelerator Facility: $230M → $215M (−6%)
+    - Fermi National Accelerator Laboratory: $725M → $803M (+11%) — the one Science-lab exception
+    - Princeton Plasma Physics Laboratory: $106M → $105M (−1%) — flat
+  - **Renewables/EERE-dominated sites (deepest cuts):**
+    - National Laboratory of the Rockies (NREL): $510M → **$246M (−52%)**
+    - Golden Field Office (CMEI/EERE field office): $601M → **$192M (−68%)**
+  - **Idaho National Laboratory** (mixed NE/NNSA/Science): $1.69B → $1.61B (−5%) — relatively flat despite NE office −9%.
+
+- **Largest LPIs by FY27 request:**
+  1. Washington Headquarters: **$8.03B** (+37% from $5.85B FY26) — admin/HQ centralized accounts
+  2. Los Alamos National Laboratory: $6.75B
+  3. **Undesignated LPI: $6.04B** (up from $2.68B FY26 = **+125%**) — this bucket is suspicious; see watch items below
+  4. Savannah River Site: $4.73B
+  5. Sandia National Laboratories: $3.98B
+  6. Lawrence Livermore National Laboratory: $3.20B
+  7. Y-12 National Security Complex: $2.55B
+  8. Kansas City National Security Complex: $2.18B
+  9. Office of River Protection: $1.97B
+  10. Oak Ridge National Laboratory: $1.86B
+
+- **Sub-program detail (illustrated via Argonne):** Each lab's table breaks down by office subtotals (Science, CMEI, HGEO, NE, EM, etc.), with sub-program line items under each subtotal. Many sub-program lines carry **"(formerly X)" annotations** confirming the office renamings:
+  - "Transportation Technologies (formerly Vehicle Technologies - EERE)"
+  - "Alternative Fuels & Feedstocks (former Hydrogen & Fuel Cell Technologies - EERE)"
+  - "Integrated Energy Systems (formerly Energy Grid Integration - EERE / formerly Solar Energy Technologies - EERE / formerly Wind Energy Technologies - EERE)"
+  - "Hydropower & Hydrokinetic (formerly Water Power Technologies - EERE)"
+  - "Power and Capture (formerly Advanced Energy Systems)" → under "Office of Coal (formerly Coal and Carbon Utilization)"
+  - "Power, Fuels, and Chemicals (formerly Advanced Turbines)" → under "Office of Oil and Gas (formerly Oil, Gas, and Critical Minerals)"
+
+  At Argonne, the rebranded CMEI total falls **$157.6M FY25 → $96.6M FY26 → $34.6M FY27 (−64% over two years)**. The lab-level granularity makes the EERE→CMEI restructure traceable line by line.
+
+**(c)** — `CONDITIONAL_SECTION` is unset in `STATUS.md`; section omitted.
+
+**(d) Relevance to the project** —
+
+- **Why this matters for `PROJECT_QUESTION`:** This is the *lab-axis* cross-section of the DOE budget. Together with the SummaryByOrg's office-axis cross-section and the BiB's narrative framing, this gives a complete 2D map (lab × office) of FY27 dollars. For any budget-map visualization, this document supplies the lab dimension.
+- **What position does this report represent:** OCFO reference table for the FY27 request. Like SummaryByOrg, the framing is neutral. The document **explicitly excludes** offsets/receipts/rescissions (its own methodology note), so it answers a different question than the BiB.
+- **Cross-references in the existing library:**
+  - `doe_fy27BudgetInBrief_2026.pdf` — narrative; lab tables here drill into the BiB's office-level numbers.
+  - `doe_fy27SummaryByOrg_2026.pdf` — companion office-axis view; the SummaryByOrg's net totals reconcile to the BiB topline, the Lab Tables' gross totals do not. Always note which axis you're citing.
+
+**Structural caveats and watch items:**
+
+- **Gross-vs-net reconciliation gap (~$8B):** Lab Tables total $61.90B FY27 vs BiB topline $53.91B FY27. The difference is supplements minus offsets, and any artifact mixing the two needs to carry the reconciliation explicitly. A budget-map visualization that puts lab-level dollars next to office-level discretionary will mislead unless gross-vs-net is normalized.
+- **"Undesignated LPI" growing 125%:** This is the bucket for funds not yet allocated to a specific lab. The +125% increase ($2.68B → $6.04B) is large enough to materially affect any budget map. Likely sits in WFTC mandatory resources or the new initiatives (Baseload Power, AIQ) before they're broken out by lab — but worth tracing to the source. Watch for resolution in the per-volume justifications.
+- **"Washington Headquarters" growing 37% ($5.85B → $8.03B):** Centralized HQ accounts hold money before it flows to operational sites. The +37% likely contains AIQ ($1.2B) and Baseload Power ($3.5B) before lab allocation. Should be traceable to the same Repurposed IIJA Funding flagged in doc #2.
+- **Argonne and Oak Ridge are the home of the Genesis Mission $1.2B AI supercomputers (per BiB)**, but the Lab Tables show ANL and ORNL each *cut* in FY27 (−17% and −16%). The AIQ money must be sitting in Washington Headquarters or Undesignated LPI in this document and is not yet allocated to those labs. The flow ANL/ORNL labs → AIQ initiative will need to be traced once the Science volume of the JEDI is in the library.
+- **Office renamings (EERE→CMEI, Fossil Energy→HGEO) cascade to sub-program names**: every lab's tables show the new naming with the prior name in parentheses. Year-over-year comparison at sub-program granularity requires mapping new names to old names — the Lab Tables document is itself the cleanest source for that mapping.
+
+---
