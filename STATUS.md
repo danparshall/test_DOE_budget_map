@@ -20,7 +20,7 @@ Per-project configuration the skills read at runtime. Update only when the proje
 
 - **Workflow:** main_only.
 - **Active research lines:**
-  - `20260521_fy27-bib-papers` — paper-ingestion line for the FY27 BiB corpus. Three docs ingested (BudgetInBrief, SummaryByOrg, LaboratoryTables); additional docs on standby pending scope decisions.
+  - `20260521_fy27-bib-papers` — FY27 BiB corpus line. Three docs ingested + 3 reconciled structured tables (T1 `data/fy27_summary_by_org.csv`, T2 `data/fy27_lab_summary.csv`, T3 `data/fy27_lab_by_office.csv`) + first-cut `budget_map_v0.md`. **Default pickup:** file composed §7 issue (URL in `docs/active/20260521_fy27-bib-papers/convos/20260521_fy27-bib-ingest.md`) → start v1 budget-map visualizations. Alternatives if question requires: Science JEDI (sub-program detail) or State Tables (geographic cut). See research-line RESEARCH_LOG for full options.
   - `20260521_fy26-mapping-scope` — scope and schema for the FY26 DOE budget map. v1 schema drafted; awaiting facility-scope decision before extraction.
 
 ## Recent sessions
