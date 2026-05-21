@@ -1,0 +1,77 @@
+line,fy25_enacted_k,fy26_enacted_k,fy27_request_k,delta_k,pct_change,group,subgroup,level,footnote,notes
+Federal Salaries and Expenses,500000,525000,577097,52097,9.92,NNSA,,leaf,,
+Weapons Activities,19293000,20378000,27441159,7063159,34.66,NNSA,,leaf,4,"Footnote 4: P.L. 119-21 (WFTC) provided $3,885,000k mandatory FY26 supplement."
+Defense Nuclear Nonproliferation,2396000,2367000,2389595,22595,0.95,NNSA,,leaf,,
+Naval Reactors,1946000,2134000,2393692,259692,12.17,NNSA,,leaf,,
+"Total, National Nuclear Security Administration",24135000,25404000,32801543,7397543,29.12,NNSA,,section_total,,
+Science,8240000,8250000,7138815,-1111185,-13.47,Undersecretary for Science,,leaf,,Office of Science; -13% from FY26 enacted.
+Artificial Intelligence and Quantum,0,0,1200000,1200000,,Undersecretary for Science,,leaf,5,New office FY27. Footnote 5: repurposes prior year unobligated IIJA funding.
+Office of Fusion,0,0,10000,10000,,Undersecretary for Science,,leaf,,New standalone office FY27.
+Strategy & Technology Roadmaps,0,0,3000,3000,,Undersecretary for Science,,leaf,,New office FY27.
+Office of Technology Commercialization,20000,13000,26555,13555,104.27,Undersecretary for Science,,leaf,,
+"Total, Undersecretary for Science",8260000,8263000,8378370,115370,1.4,Undersecretary for Science,,section_total,,
+"Cybersecurity, Energy Security and Emergency Response",200000,190000,160173,-29827,-15.7,Undersecretary for Energy,,leaf,,CESER. -16% from FY26.
+Nuclear Energy,1685000,1685000,1533735,-151265,-8.98,Undersecretary for Energy,,leaf,,Office of Nuclear Energy. -9% from FY26.
+Nuclear Waste Disposal Fund,12040,12040,12040,0,0.0,Undersecretary for Energy,,leaf,,
+Hydrocarbons and Geothermal Energy Office,1226909,647000,676042,29042,4.49,Undersecretary for Energy,,leaf,,HGEO. Rebranded from Office of Fossil Energy.
+Strategic Petroleum Reserve,213390,206325,295102,88777,43.03,Undersecretary for Energy,Petroleum Reserves,leaf,,
+Naval Petroleum and Oil Shale Reserves,13010,13000,13000,0,0.0,Undersecretary for Energy,Petroleum Reserves,leaf,,
+SPR Petroleum Account,100,100,100,0,0.0,Undersecretary for Energy,Petroleum Reserves,leaf,,
+Northeast Home Heating Oil Reserve,7150,7150,3575,-3575,-50.0,Undersecretary for Energy,Petroleum Reserves,leaf,,
+"Total, Petroleum Reserves",233650,226575,311777,85202,37.6,Undersecretary for Energy,Petroleum Reserves,subtotal,,
+Electricity,339750,259750,203477,-56273,-21.66,Undersecretary for Energy,,leaf,,Office of Electricity. -22% from FY26.
+Baseload Power,0,0,3500000,3500000,,Undersecretary for Energy,,leaf,6,New initiative FY27. Footnote 6: repurposes prior year unobligated IIJA funding.
+Indian Energy Policy and Programs,70000,75000,50038,-24962,-33.28,Undersecretary for Energy,,leaf,,-33% from FY26.
+Office of Clean Energy Demonstrations,50000,0,0,0,,Undersecretary for Energy,,leaf,,Eliminated in FY26 enacted; stays eliminated FY27.
+Title 17 Innovative Technology Loan Guarantee Program,-29140,-56753,179588,236341,-416.44,Undersecretary for Energy,Energy Dominance Financing,leaf,,"Sign change: FY25/FY26 net offset, FY27 positive funding."
+Advanced Technology Vehicles Manufacturing Loan Program,13000,9500,9500,0,0.0,Undersecretary for Energy,Energy Dominance Financing,leaf,,
+Tribal Energy Loan Guarantee Program,6300,6300,2000,-4300,-68.25,Undersecretary for Energy,Energy Dominance Financing,leaf,,OCR reported -65%; PNG verifies -68%.
+"Total, Energy Dominance Financing",-9840,-40953,191088,232041,-566.6,Undersecretary for Energy,Energy Dominance Financing,subtotal,,+567% from FY26 enacted (printed).
+Southeastern Power Administration,0,0,0,0,,Undersecretary for Energy,Power Marketing Administrations,leaf,,
+Southwestern Power Administration,11440,10400,10400,0,0.0,Undersecretary for Energy,Power Marketing Administrations,leaf,,
+Western Area Power Administration,99872,63372,63388,16,0.03,Undersecretary for Energy,Power Marketing Administrations,leaf,,
+Falcon and Amistad Operating and Maintenance Fund,228,228,228,0,0.0,Undersecretary for Energy,Power Marketing Administrations,leaf,,
+Colorado River Basin Marketing Fund,0,0,0,0,,Undersecretary for Energy,Power Marketing Administrations,leaf,,
+"Total, Power Marketing Administrations",111540,74000,74016,16,0.02,Undersecretary for Energy,Power Marketing Administrations,subtotal,,
+"Total, Undersecretary for Energy",3919049,3128412,6712386,3583974,114.56,Undersecretary for Energy,,section_total,,
+Non-Defense Environmental Cleanup,342000,322371,338490,16119,5.0,Direct Reports,Environmental Management,leaf,,
+Uranium Enrichment Decontamination and Decommissioning,855000,865000,854583,-10417,-1.2,Direct Reports,Environmental Management,leaf,,
+Defense Environmental Cleanup,7285000,7375000,6983318,-391682,-5.31,Direct Reports,Environmental Management,leaf,,
+Defense Uranium Enrichment D&D,285000,0,253000,253000,,Direct Reports,Environmental Management,leaf,,FY26 enacted = $0; FY27 restored.
+"Total, Environmental Management",8767000,8562371,8429391,-132980,-1.55,Direct Reports,Environmental Management,subtotal,,
+Critical Minerals and Energy Innovation,3098341,1883250,1121742,-761508,-40.44,Direct Reports,,leaf,,CMEI. Rebranded from EERE. -40% from FY26; -64% over 2 years.
+"Environment, Health, Safety, and Security",231263,230463,231940,1477,0.64,Direct Reports,,leaf,,
+Office of Enterprise Assessments,94154,86154,88815,2661,3.09,Direct Reports,,leaf,,
+Specialized Security Activities,377000,441000,471082,30082,6.82,Direct Reports,,leaf,,
+Legacy Management,196302,198208,200386,2178,1.1,Direct Reports,,leaf,,
+Office of Hearings And Appeals,5499,4499,5023,524,11.65,Direct Reports,,leaf,,
+Advanced Research Projects Agency - Energy,460000,350000,200292,-149708,-42.77,Direct Reports,,leaf,,ARPA-E. -43% from FY26.
+Energy Information Administration,135000,135000,135370,370,0.27,Direct Reports,,leaf,,
+Office of the Secretary,6642,6642,6717,75,1.13,Direct Reports,,leaf,,
+Congressional & Intergovernmental Affairs,5500,5000,7032,2032,40.64,Direct Reports,,leaf,,
+Office of the Chief Financial Officer,63283,62500,64325,1825,2.92,Direct Reports,,leaf,,
+Chief Information Officer,219000,196862,205359,8497,4.32,Direct Reports,,leaf,,
+Industrial Emission and Technology Coordination,1000,0,0,0,,Direct Reports,,leaf,,FY25 only; eliminated FY26-FY27.
+Office of Management,70000,56576,110510,53934,95.33,Direct Reports,,leaf,,+95% from FY26.
+Project Management,16000,10890,11000,110,1.01,Direct Reports,,leaf,,
+Office of Human Capital Management,38500,30509,34264,3755,12.31,Direct Reports,,leaf,,
+Office of Small & Disadvantaged Business Utilization,4800,2500,3000,500,20.0,Direct Reports,,leaf,,
+General Counsel,37000,38000,41176,3176,8.36,Direct Reports,,leaf,,
+Office of Policy,24950,15000,18064,3064,20.43,Direct Reports,,leaf,,
+Office of Arctic Energy,0,0,2000,2000,,Direct Reports,,leaf,,New office FY27.
+Public Affairs,4500,6750,7032,282,4.18,Direct Reports,,leaf,,
+Office of International Affairs,31000,22000,26463,4463,20.29,Direct Reports,,leaf,,
+Statutorily Required Civil Rights/EEO Functions,0,4025,0,-4025,-100.0,Direct Reports,,leaf,,Proposed to zero in FY27 after FY26 funding.
+Minority Economic Impact,27685,0,0,0,,Direct Reports,,leaf,,FY25 only; eliminated FY26-FY27.
+Strategic Partnership Projects,40000,40000,40000,0,0.0,Direct Reports,,leaf,,
+Inspector General,86000,90000,77400,-12600,-14.0,Direct Reports,,leaf,,-14% from FY26.
+Miscellaneous Revenues,-100578,-100578,-100578,0,-0.0,Direct Reports,,leaf,,Negative line: revenue receipts offsetting BA.
+"Total, Direct Reports",13939841,12377621,11437805,-939816,-7.59,Direct Reports,,section_total,,
+Energy Projects,0,97557,0,-97557,-100.0,Other,,leaf,,Standalone line — not part of Direct Reports or Receipts/Offsets totals. FY26 only; goes to zero FY27.
+"Excess Fees and Recovery, FERC",-9000,-9000,-9000,0,-0.0,Receipts and Offsets,,leaf,,OCR rendered 'Fees' as 'Fess'.
+Title XVII Loan Guar. Prog Section 1703 Negative Credit Subsidy Receipt,-15739,-157063,-355127,-198064,126.1,Receipts and Offsets,,leaf,,
+UED&D Fund Offset,-285000,0,-253000,-253000,,Receipts and Offsets,,leaf,,FY26 enacted = 0.
+Sale of Northeast Home Heating Oil Reserve,0,0,-100000,-100000,,Receipts and Offsets,,leaf,,New FY27 receipt from asset sale.
+Repurposed IIJA Funding,0,0,-4700000,-4700000,,Receipts and Offsets,,leaf,,New FY27 offset. Reallocates to Baseload Power ($3.5B) + AIQ ($1.2B). $4.7B of the $15.2B IIJA cancellation visible here; remaining ~$10.5B is pure rescission not in this table.
+"Total, Receipts and Offsets",-309739,-166063,-5417127,-5251064,3162.09,Receipts and Offsets,,section_total,,
+"Total, Funding by Organization",49944151,49104527,53912977,4808450,9.79,Grand Total,,grand_total,,
