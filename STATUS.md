@@ -23,7 +23,7 @@ Per-project configuration the skills read at runtime. Update only when the proje
 
 ## Recent sessions
 
-(Sessions will be appended here by `update-docs` and `finish-convo` skills as work progresses.)
+- **2026-05-21** — `20260521_fy27-bib-papers`: setup + naming agreement + Lab Tables URL discovery (plural form). Blocked on energy.gov sandbox allow-list propagation. Fresh chat required to ingest the three FY27 BiB starter docs. See `docs/active/20260521_fy27-bib-papers/RESEARCH_LOG.md`.
 
 ## Archived research lines
 
