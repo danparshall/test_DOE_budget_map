@@ -126,7 +126,14 @@ structured-data follow-on that wasn't in the original plan.
 - `scripts/build_fy27_lab_summary.py` — regex parser over `pdftotext -layout` output.
 - `data/README.md` — schema, provenance, hierarchy diagram, **gross-vs-net caveat** between T1 ($53.91B net) and T2 ($61.90B gross).
 
-**Structured tables T3 + first budget-map artifact:** see commits below this session entry's date.
+**Structured tables T3 + first budget-map artifact (5 commits):**
+
+- `data/fy27_lab_by_office.csv` — **347 rows** (93 labs × 37 offices). Lab × office subtotal matrix. Two skip rules implemented in the parser: (1) `(Gross)` and `(DA)` modifier suffixes (nested sub-rollups within Departmental Administration / OTC), (2) Petroleum Reserves children (Strategic Petroleum Reserve, Naval Petroleum & Oil Shale Reserves, SPR Petroleum Account, Northeast Home Heating Oil Reserves — all roll into parent "Petroleum Reserves"). Two synthetic residual rows added for Washington HQ ($138K FY27) and Undesignated LPI ($324K FY27) to capture orphan leaves not under any subtotal. Global FY25/26/27 sums = T2 sums exactly; per-lab reconciliation passes for all 93 funded labs (Battelle Savannah River Alliance is $0 all years, excluded).
+- `scripts/build_fy27_lab_by_office.py` — regex parser with documented skip rules and reconciliation-driven residual logic.
+- `data/README.md` — extended to document T3 schema, parsing complications, and the T3-vs-T1 gross-vs-net reconciliation gap (~$41M on Weapons Activities; T3 office totals do NOT match T1 office totals exactly).
+- `budget_map_v0.md` — **first-cut budget map artifact at repo root.** Markdown synthesis of T1+T2+T3 with: headline ($53.91B, Defense/Non-Defense rebalance), section rollups, the cuts the BiB omits (Science -13%, CMEI -40%/-64% over 2yr, ARPA-E -43%, OE -22%, CESER -16%, NE -9%, Indian Energy -33%, IG -14%), the increases (Weapons +35%, Baseload $3.5B new, AIQ $1.2B new), IIJA cancellation mechanics, the Science-vs-NNSA lab-level story, and the AIQ/Genesis Mission location finding (money parked at Washington HQ + Undesignated LPI, not yet flowing to ANL/ORNL). Open questions section enumerates v1+ deferred work.
+
+**§7 upstream issue composed.** Pre-filled URL with title, body, RESEARCHER.md SHA, repro, and suggested fixes for both Step 1 (sandbox allow-list precondition) and Step 2 (OCR fallback for custom-font PDFs), plus the bonus printed-percentage finding. Not yet filed (URL provided to Dan).
 
 ### Next Steps (for the next session)
 
