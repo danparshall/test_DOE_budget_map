@@ -1,5 +1,7 @@
 # Status — test_DOE_budget_map
 
+workflow_mode: main_only
+
 ## What this repo is
 
 Mapping the U.S. Department of Energy budget by program and mission area — tracing how appropriations flow across offices (Science, EERE, Nuclear, Fossil, NNSA) and what each line item funds.
