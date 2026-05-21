@@ -125,7 +125,64 @@ The 94 LPIs include national labs (NNSA labs, Office of Science labs, NREL), Sit
 
 ---
 
-## Gross-vs-net reconciliation (critical caveat)
+## `fy27_lab_by_office.csv`
+
+**Source:** `papers/doe_fy27LaboratoryTables_2026.pdf`, all pages — `Subtotal, <office>` rows within each lab's table section. **347 rows** (one per (lab, office) cell where the lab receives money from that office). The lab × office matrix.
+
+**Build script:** `scripts/build_fy27_lab_by_office.py`
+
+**Extraction provenance:** Walks the text extraction line by line; matches `Subtotal, <office>  <fy25>  <fy26>  <fy27>` lines and `Total <lab>  <fy25>  <fy26>  <fy27>` lines (verified against T2's 94 lab names). For each lab, the script reconciles `sum(office subtotals) == T2 lab total` across all three fiscal years. The script writes the CSV only after reconciliation passes.
+
+Two parsing complications, both handled explicitly:
+
+1. **Nested sub-rollups within an office.** The PDF presents some office categories as parent + children — for example, `Subtotal, Petroleum Reserves` is the parent of `Subtotal, Strategic Petroleum Reserve` + `Subtotal, Naval Petroleum & Oil Shale Reserves` + `Subtotal, SPR Petroleum Account` + `Subtotal, Northeast Home Heating Oil Reserves`. Including both parent and children causes double-counting. The script skips the children (the parent IS the office-level rollup the matrix wants). Same for `(Gross)` and `(DA)` modifier variants on Departmental Administration and Office of Technology Commercialization. Skip list is hard-coded in the script and documented inline.
+
+2. **Orphan leaves at Washington Headquarters and Undesignated LPI.** Two labs have rows that contribute to the lab total but are not under any `Subtotal, X` parent — e.g., Washington HQ has a direct `Energy Information Administration` leaf at $135M. Enumerating all such orphans (especially at Undesignated LPI, which has many) is brittle. Instead, the parser adds a synthetic `Other (not under office subtotal)` row per affected lab carrying the exact residual that makes the lab reconcile to T2. Currently 2 such residuals (Washington HQ: $135M/$135M/$138M; Undesignated LPI: $337M/$416M/$324M). The CSV is therefore 100% reconciled to T2 with the limitation visible in the `office` column.
+
+### Schema
+
+| Column | Type | Description |
+|---|---|---|
+| `lab_name` | str | Lab/plant/installation name (matches T2's `lpi_name`) |
+| `office` | str | Office category (e.g., "Weapons Activities", "Science", "Critical Minerals and Energy Innovation"). The synthetic "Other (not under office subtotal)" value flags residual orphan-leaf money at Washington HQ and Undesignated LPI. |
+| `fy25_enacted_k` | int | FY 2025 enacted, $ in thousands |
+| `fy26_enacted_k` | int | FY 2026 enacted, $ in thousands |
+| `fy27_request_k` | int | FY 2027 President's Budget request, $ in thousands |
+
+### Coverage
+
+- 93 labs (94 in T2 minus Battelle Savannah River Alliance which has $0 across all years)
+- 37 distinct office categories
+- All FY25/FY26/FY27 totals reconcile to T2 globally and per-lab
+
+### Common queries
+
+```python
+import pandas as pd
+df = pd.read_csv("data/fy27_lab_by_office.csv")
+
+# How much does each office give Sandia in FY27?
+df[df["lab_name"] == "Sandia National Laboratories"][["office", "fy27_request_k"]] \
+    .sort_values("fy27_request_k", ascending=False)
+
+# Pivot: full lab × office matrix
+matrix = df.pivot_table(
+    index="lab_name", columns="office", values="fy27_request_k",
+    aggfunc="sum", fill_value=0
+)
+
+# Office totals across all labs (note: NOT the same as T1's office totals
+# because T3 is gross BA, T1 is net discretionary — see gross-vs-net caveat below)
+office_totals = df.groupby("office")["fy27_request_k"].sum().sort_values(ascending=False)
+```
+
+### Reconciliation to T1 (does NOT match exactly)
+
+Summing T3 office totals does NOT exactly match T1's office-level numbers. T3 is gross budget authority at the lab level (per the source PDF's methodology); T1 is net discretionary from the Summary by Organization PDF. Example: T3 "Weapons Activities" sums to $27,400M FY27 across all labs; T1 "Weapons Activities" = $27,441M. The ~$41M gap likely lives in the gross-vs-net adjustments (supplements, offsets, mandatory transfers excluded from one view but not the other). For accurate office-level totals, use T1. T3 is the cross-section, not a substitute for T1.
+
+---
+
+
 
 **The two CSVs answer different questions and do NOT sum to the same total.** Mixing them in a single visualization without normalization will mislead:
 
@@ -140,7 +197,7 @@ The ~$8B gap is the supplements (WFTC mandatory $3.885B FY26 etc.) plus the offs
 
 ## Pending tables (not yet built)
 
-- **Per-lab × per-program detail (T3)** — pages 4–124 of `doe_fy27LaboratoryTables_2026.pdf` contain a sub-program breakdown for every LPI (e.g., Argonne broken down into Basic Energy Sciences / High Energy Physics / CMEI subtotal / Subsurface Energy / etc.). This is the "expand the row" detail layer; ~3–5k rows total once flattened. Deferred until a specific use case requires it.
+- **Per-lab × per-sub-program detail (T4)** — pages 4–124 of `doe_fy27LaboratoryTables_2026.pdf` contain sub-program detail under each office subtotal (e.g., Argonne CMEI broken down into Vehicle Tech / Hydrogen / Solar / Wind / Hydropower / etc.). T3 captures the office-level rollup; T4 would flatten the sub-program level (~3–5k rows). Deferred until a specific use case requires it.
 - **BiB headline figures table** — small (~15 rows) Defense / Non-Defense / NNSA / Science / EM / etc. table from the BiB's overview. Mostly redundant with `fy27_summary_by_org.csv` rolled up to section level; build only if convenient framing for a deliverable.
 
 ---
@@ -151,3 +208,4 @@ The ~$8B gap is the supplements (WFTC mandatory $3.885B FY26 etc.) plus the offs
 |---|---|---|---|---|---|
 | `fy27_summary_by_org.csv` | `doe_fy27SummaryByOrg_2026.pdf` | 1–3 | tesseract OCR @ 300 DPI + manual transcription (custom-font PDF defeated pdftotext) | 76 | 30 checks: 4 nested subtotals × 3 yrs + 5 section totals × 3 yrs + grand total × 3 yrs |
 | `fy27_lab_summary.csv` | `doe_fy27LaboratoryTables_2026.pdf` | 1–3 | `pdftotext -layout` + regex | 94 | 1 check: sum of rows = printed total, × 3 yrs |
+| `fy27_lab_by_office.csv` | `doe_fy27LaboratoryTables_2026.pdf` | 4–124 | `pdftotext -layout` + regex on `Subtotal,` lines, with skip rules for nested rollups and synthetic residual rows for orphan leaves | 347 | per-lab × 3 yrs: 93 labs × 3 yrs = 279 checks (plus global sum = T2 global sum, × 3 yrs) |
