@@ -137,13 +137,19 @@ structured-data follow-on that wasn't in the original plan.
 
 ### Next Steps (for the next session)
 
-The three-doc starter ingest is complete and structured. The corpus supports a first-pass budget map. Probable next directions:
+**Handoff:** Next session should start by deciding which axis to deepen — **v1 of the budget map (add visualizations and FY26-vs-FY27 deltas)** if the immediate question is presentation, **pull the Science-volume per-org JEDI** if the question is where the −13% Science cut lands at sub-program level, or **pull the State Tables PDF** if the question is geographic distribution. **Default if no preference:** file the composed §7 issue (5 min, URL in this session's convo file) and then start v1 budget-map visualizations.
 
-1. **Decide on scope expansion.** Pre-discovered URLs still queued: `doe-fy-2027-state-tables` (geographic cut), `doe-fy-2027-summary-table-appropriation` (appropriation-axis), `doe-fy-2027-statistical-tables`. Don't pull without specific use case.
-2. **Per-volume JEDIs.** The Science volume (separate document not yet ingested) is where the −13% Science cut breaks down by sub-program. Would resolve the question of which sub-programs absorb the cut and where the AIQ $1.2B actually ends up.
-3. **Track remaining ~$10.5B IIJA rescission** outside this document set. Likely in a separate cancellation schedule (look for "rescission" or "cancellation" docs on the FY27 landing page).
-4. **Resolve "Undesignated LPI" growth.** +$3.36B / +125% in Lab Tables, likely contains some of AIQ and Baseload Power before lab allocation. Worth tracing once the Science / NE volumes are in the library.
-5. **Build T3 (per-lab × per-program detail) for specific drill-downs** once a question motivates it.
+Candidate directions, post-T3:
+
+1. **v1 budget map — visualizations.** Add at minimum: a treemap or sunburst of office × lab, a bar chart of office-level deltas, a Defense/Non-Defense flow visualization, and the Science-vs-NNSA lab-level crosstab. Probably worth a `notebooks/` or `analysis/` directory. The structured data (T1+T2+T3 in `data/`) is the input; output is `budget_map_v1.md` plus image files. Open question: HTML/interactive vs static figures.
+2. **Per-volume JEDIs — Science volume first.** The Science JEDI (separate document, not yet ingested) is where the −13% Science cut breaks down by sub-program — would resolve whether the cut lands in BES, BER, HEP, NP, ASCR, or FES, and where the AIQ $1.2B actually flows at ANL/ORNL. Landing page URL pattern is `doe-fy-2027-science` (verify before fetching).
+3. **State Tables (geographic cut).** Pre-discovered URL: `https://www.energy.gov/documents/doe-fy-2027-state-tables`. Adds a state × office matrix to complement T3's lab × office. Useful for any policy work where congressional-district impact matters.
+4. **Summary by Appropriation (appropriation-axis).** Pre-discovered URL: `doe-fy-2027-summary-table-appropriation` (linked on landing page, pattern verified). Cross-cuts T1 by appropriation account rather than by organization — the axis Appropriations subcommittees actually mark up. Probably the most useful single addition if budget-map work targets congressional audiences.
+5. **Statistical Tables.** Pre-discovered URL: `doe-fy-2027-statistical-tables` (likely; pattern verified for siblings). Historical trend tables. Useful for putting FY27 in multi-year context.
+6. **T4 — per-lab × per-sub-program flat.** Drill down within T3 to the leaf level (pp. 4-124 of Lab Tables). ~3-5k rows once flattened. Defer until a specific drill-down question motivates the work.
+7. **Resolve "Undesignated LPI" $6.04B FY27.** Up +125% from FY26. Contains the $3.5B Baseload Power and unallocated AIQ pieces. Tracing this within the current corpus is limited; needs the Science / NE volumes to resolve.
+8. **Track the remaining ~$10.5B IIJA rescission.** Outside the three documents we have — likely in a separate cancellation schedule on the FY27 landing page. Pull only if budget-map work goes deeper into appropriations mechanics.
+9. **File the composed §7 upstream issue.** Pre-filled URL in `convos/20260521_fy27-bib-ingest.md`. Covers Step 1 sandbox precondition, Step 2 OCR fallback for custom-font PDFs, and the printed-percentage data-quality bonus finding. 5-minute task.
 
 ### Skill state
 
