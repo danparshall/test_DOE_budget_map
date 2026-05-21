@@ -4,13 +4,13 @@ workflow_mode: main_only
 
 ## What this repo is
 
-Mapping the U.S. Department of Energy budget by program and mission area — tracing how appropriations flow across offices (Science, EERE, Nuclear, Fossil, NNSA) and what each line item funds.
+Mapping the U.S. Department of Energy budget by office, program, and national lab — tracing how appropriations flow across DOE offices and what work each line item funds at the labs. Uses the post-Nov-2025 DOE reorganization structure as the primary org axis (Science, NNSA, CMEI [absorbing EERE], HGEO [absorbing Fossil Energy], Nuclear Energy, Environmental Management, ARPA-E, and others), with legacy office/program labels preserved per-line where the source documents provide a crosswalk.
 
 ## Project parameters
 
 Per-project configuration the skills read at runtime. Update only when the project's scope or conventions change.
 
-- `PROJECT_QUESTION`: Mapping the U.S. Department of Energy budget by program and mission area — tracing how appropriations flow across offices (Science, EERE, Nuclear, Fossil, NNSA) and what each line item funds.
+- `PROJECT_QUESTION`: Mapping the U.S. Department of Energy budget by office, program, and national lab — tracing how appropriations flow across DOE offices and what work each line item funds at the labs. Uses the post-Nov-2025 DOE reorganization structure as the primary org axis, with legacy office/program labels preserved per-line where the source documents provide a crosswalk.
 - `CONDITIONAL_SECTION`: unset
 - `BIB_FILE`: unset
 - `PAPERS_INDEX`: PAPER_INDEX.md
@@ -18,12 +18,15 @@ Per-project configuration the skills read at runtime. Update only when the proje
 
 ## Current state
 
-- **Branch:** main only. No research lines yet.
-- **Last session:** None — repo just created via claude_researcher bootstrap on 2026-05-21.
+- **Workflow:** main_only.
+- **Active research lines:**
+  - `20260521_fy27-bib-papers` — paper-ingestion line for the FY27 BiB corpus. Three docs ingested (BudgetInBrief, SummaryByOrg, LaboratoryTables); additional docs on standby pending scope decisions.
+  - `20260521_fy26-mapping-scope` — scope and schema for the FY26 DOE budget map. v1 schema drafted; awaiting facility-scope decision before extraction.
 
 ## Recent sessions
 
 - **2026-05-21** — `20260521_fy27-bib-papers`: setup + naming agreement + Lab Tables URL discovery (plural form). Blocked on energy.gov sandbox allow-list propagation. Fresh chat required to ingest the three FY27 BiB starter docs. See `docs/active/20260521_fy27-bib-papers/RESEARCH_LOG.md`.
+- **2026-05-21** — `20260521_fy26-mapping-scope`: scoped FY26 budget map (post-reorg, DOE-only, office→program→lab, $49.1B total); discovered DOE Nov-2025 reorganization affects office axis; corrected source plan (FY27 BiB, not FY26 BiB); verified v1 schema against Argonne sample. Initial workflow error: opened a branch before noticing `main_only` mode — deleted and moved to main. See `docs/active/20260521_fy26-mapping-scope/RESEARCH_LOG.md`.
 
 ## Archived research lines
 
