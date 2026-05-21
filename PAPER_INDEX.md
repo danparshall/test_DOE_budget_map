@@ -10,3 +10,4 @@ DOE's FY27 Congressional Justification was published as a multi-document release
 |----------|-------------|------|
 | DOE (April 2026) | FY 2027 Budget in Brief — executive-level narrative of the $53.91B request, organized office-by-office; DOE/CF-0222 | `doe_fy27BudgetInBrief_2026.pdf` |
 | DOE (April 2026) | FY 2027 Summary Table by Organization — sub-program line items for every DOE office with FY25 enacted / FY26 enacted / FY27 request / $ change / % change | `doe_fy27SummaryByOrg_2026.pdf` |
+| DOE (April 2026) | FY 2027 Laboratory Tables — gross budget authority broken down by lab/plant/installation, with sub-program detail (~125 LPIs over 124 pp); DOE/CF-0229 | `doe_fy27LaboratoryTables_2026.pdf` |
