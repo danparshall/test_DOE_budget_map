@@ -1,6 +1,6 @@
 # Research Log — FY26 budget mapping scope
 
-This line covers initial scoping and schema design for the FY26 DOE budget map (by office, program, and lab). Output is a structured table joining DOE offices → programs → labs with FY26 enacted dollars; this line tracks the sessions setting up that work. Once the schema is locked and validated against sample labs, follow-on extraction/validation work may live in separate research lines.
+This line covers initial scoping and schema design for the FY26 DOE budget map (by office, program, and lab). Output is a structured table joining DOE offices → programs → labs with FY26 enacted dollars; this line tracks the sessions setting up that work. Once the schema is locked and validated against sample labs, follow-on extraction/visualization work may live in separate research lines.
 
 ---
 
@@ -9,53 +9,64 @@ This line covers initial scoping and schema design for the FY26 DOE budget map (
 ### Scope
 
 - **Budget year:** FY2026 enacted (current FY)
-- **Budget concept:** budget authority (gross). Per FY27 Lab Tables prefatory note: includes discretionary and supplemental funding; does NOT consider revenues/receipts, use of prior year balances, deferrals, rescissions, or other adjustments appropriated as offsets.
+- **Budget concept:** budget authority (gross at lab axis, net at org axis — see gross-vs-net section).
 - **Scope of "DOE":** DOE-only. Non-DOE flows (DOD/NIH Work for Others, SPPs) are out of scope.
-- **Org chart:** post-Nov-2025 reorganization. New offices: Critical Minerals and Energy Innovation (CMEI, absorbing EERE), Hydrocarbons and Geothermal Energy Office (HGEO, absorbing Fossil Energy), Office of Artificial Intelligence and Quantum (AIQ), Office of Fusion, Office of Strategy and Technology Roadmaps, Office of Technology Commercialization, Office of Energy Dominance Financing, Baseload Power. Stable offices: Science, NNSA (Weapons Activities, DNN, Naval Reactors), Nuclear Energy, Environmental Management, ARPA-E, CESER, Electricity (OE), Indian Energy, EIA, departmental admin. Legacy office/program labels preserved per-line where the FY27 BiB provides the crosswalk (typically as parenthetical `(formerly X - <old office>)` annotations).
+- **Org chart:** post-Nov-2025 reorganization. New offices: CMEI (absorbing EERE), HGEO (absorbing Fossil Energy), Office of Artificial Intelligence and Quantum (AIQ), Office of Fusion, Office of Strategy and Technology Roadmaps, Office of Technology Commercialization, Office of Energy Dominance Financing, Baseload Power. Stable: Science, NNSA (Weapons Activities, DNN, Naval Reactors), Nuclear Energy, Environmental Management, ARPA-E, CESER, Electricity (OE), Indian Energy, EIA, departmental admin. Legacy office/program labels preserved per-line where the FY27 BiB provides the crosswalk (typically parenthetical `(formerly X - <old office>)` annotations).
 - **Use case:** general DOE budget literacy / reference. Not tilted toward AI policy.
 
 ### Total to map
 
-DOE FY2026 enacted = **$49,104,527K (~$49.1B)** per FY27 Summary Table by Organization. Reconcilable against per-lab rollup totals in the Lab Table Summary Report.
+DOE FY2026 enacted = **$49,104,527K (~$49.1B)** per FY27 Summary Table by Organization (net discretionary). At the lab axis (gross BA), the same year sums to $53.82B in the Lab Tables — a ~$4.7B gap that's partly gross-vs-net (PMA offsetting collections, ~$1.9B) and partly IIJA supplemental funding visible in Lab Tables but not in the discretionary org-axis ($1.15B at CMEI, plus smaller amounts at Science / NE / HGEO).
 
 ### Sources (in repo)
 
 | File | Format | Size | Role |
 |---|---|---|---|
-| `papers/text/doe_fy27SummaryByOrg_2026.txt` | tesseract OCR | 6.5 KB | Org-axis spine: $K by office for FY25/26 enacted + FY27 request. The reconciliation target. |
+| `papers/text/doe_fy27SummaryByOrg_2026.txt` | tesseract OCR | 6.5 KB | Org-axis spine. Reconciliation target. |
 | `papers/text/doe_fy27LaboratoryTables_2026.txt` | pdftotext | 553 KB | Per-lab detailed tables: office → program → activity → $. Primary extraction source. |
 | `papers/text/doe_fy27BudgetInBrief_2026.txt` | pdftotext | 272 KB | Narrative context + summary tables. Cross-check / context. |
 
-Structured CSV extracts pending (Dan running separate session for paper-add work).
+Structured tables produced from these:
+
+| CSV | Source pages | Rows | Description |
+|---|---|---|---|
+| `data/fy27_summary_by_org.csv` | SummaryByOrg pp 1-3 | 76 | T1 — every program from the org table with hierarchy (leaf/subtotal/section_total/grand_total). Net discretionary. |
+| `data/fy27_lab_summary.csv` | LabTables pp 1-3 | 94 | T2 — one row per LPI rollup. Gross BA. |
+| `data/fy27_lab_by_office.csv` | LabTables pp 4-124 | 347 | T3 — (lab, office) join via `Subtotal,` lines. Includes synthetic residual rows for orphan leaves. |
 
 Authoritative landing page: <https://www.energy.gov/cfo/articles/fy-2027-budget-justification>
 
-### Schema (v1)
+### Schema (v1, conceptual)
 
-Flat tidy-format, one row per (office, program_path, lab) leaf:
+The (office, program, lab) tidy table that motivated this line maps to two complementary tables in practice:
+- **T1** holds the office × program structure at the org-axis (net discretionary).
+- **T3** holds the (office, lab) join at the lab-axis (gross BA).
 
-| Field | Description |
-|---|---|
-| `office` | Top-level DOE office, post-reorg. E.g., `Science`, `Critical Minerals and Energy Innovation`, `NNSA - Weapons Activities`. |
-| `program_path` | Hierarchical program location within the office, ` > `-separated. E.g., `Basic Energy Sciences > Research`. |
-| `legacy_label` | Parenthetical legacy office/program name where the FY27 BiB provides one. E.g., `Bioenergy Technologies - EERE`. NULL where no crosswalk. |
-| `lab` | Lab/site/facility name as in the Lab Table (e.g., `Argonne National Laboratory`, `NNSA Albuquerque Complex`). |
-| `facility_type` | Classification (`national_lab`, `site_office`, `field_office`, `production_facility`, `cleanup_site`, `petroleum_reserve`, `university`, `other`). Open — see Open items. |
-| `fy25_enacted_kusd` | FY2025 enacted, $ thousands |
-| `fy26_enacted_kusd` | FY2026 enacted, $ thousands |
-| `fy27_request_kusd` | FY2027 request, $ thousands |
-| `source_section` | E.g., `FY27 Lab Tables > Argonne National Laboratory`. |
+A full join — (office, program, lab) at the line-item level — was originally planned as T3 but the implementation chose to keep T1 and T3 as separate-axis tables, with the cross-product join deferred. v1 of the budget map = T1 + T2 + T3 + facility classification.
 
-**Extraction rules:**
-- Emit only leaf rows. Subtotal lines (e.g., `Subtotal, Science`) are useful for in-extract validation but not stored as rows — they'd double-count.
-- A program funding extramural work that's bundled at office level but doesn't appear at any lab → synthetic `lab = "(extramural / not lab-distributed)"` row so office totals reconcile.
+**`facility_type` column for T2/T3** (decided this session, pending implementation): 8-9 categories — `national_lab`, `nnsa_production_facility`, `naval_reactors_facility`, `em_cleanup_site`, `spr_facility`, `doe_admin_office`, `pma_office`, `university`, `catchall`. Will be added to T2 (and T3 via join) in next paper-add session.
+
+### Known data quality issues (pending fix)
+
+1. **SWPA source-duplication.** The DOE source PDF prints `Subtotal, SWPA` and `Subtotal, Southwestern Power Administration` as two consecutive identical lines (lines 4590-4591 of the extract). Both got carried into T3 → Undesignated LPI is inflated by ~$200M/yr (FY25 $182,891K, FY26 $201,887K, FY27 $196,158K). T2 inherits the same source bug, so the T2↔T3 reconciliation "passes" while both are off by the same amount vs. the DOE document's underlying truth. Fix: add SWPA to the skip list in `build_fy27_lab_by_office.py` and corresponding fix in T2's build.
+2. **CMEI $1.15B unreconciled delta (FY26).** T3 CMEI sum = $3,033,250K; T1 CMEI leaf = $1,883,250K. Likely IIJA supplemental funding included in Lab Tables but not in the discretionary org-axis. Similar (smaller) patterns at Science (+$150M), Nuclear Energy (+$100M), HGEO (+$140M). README's gross-vs-net framing focuses on FY27 and doesn't currently document the FY26 picture. Fix: investigate and document explicitly.
+3. **NREL → NLR rename.** NREL was renamed to National Laboratory of the Rockies (NLR) effective Dec 1, 2025 under the new CMEI umbrella. Lab Tables already use the new name. README needs a 2-line callout so analysts encountering the new name can map back. Fix: README addition.
 
 ### Open items
 
-- **Facility scope:** the Lab Tables source includes ~90 facilities — true national labs, but also site offices, field offices, SPR caverns, cleanup sites, contractor production facilities (KCNSC, Y-12, Pantex, NNSS), and universities. Keep all with a `facility_type` column, or filter to national labs only? Dan to decide. Default proposal: keep all + classify; filtering is cheaper than reconstructing.
-- **Extraction approach:** the Lab Tables pdftotext output uses indent depth to encode program hierarchy, but not perfectly consistently. Needs a parser pass with light heuristics on indent + subtotal-line detection. Next session work.
-- **Cross-validation:** sum(extracted leaf rows, by office) and sum(by lab) should equal (a) Lab Table Summary Report per-lab rollups, and (b) FY27 Summary By Org office totals — modulo the mandated-transfer footnotes ($96.7M FY26 transfer to NE for Advanced Test Reactor; $20M FY26 collection to American Energy Independence Fund).
-- **Office-specific volumes:** for higher-granularity drill-downs on specific programs, the FY27 office-specific volumes (Science vol 4, CMEI vol 2, HGEO vol 3, etc.) are the next layer. Out of scope unless we hit ambiguity in the Lab Tables.
+- **T4 (per-program offsetting-collections lookup)** — would let analysts compute gross OR net at any granularity. Open whether to build before Phase 3 viz of the science drill.
+- **"Other" / "Undesignated LPI" catch-alls** — together $4.94B FY26 (≈9% of T2), unclassified. Worth a pp. 124-125 spot-check to either re-attribute or document what's in them.
+- **Office-axis crosswalk T3↔T1.** T3 uses appropriation-account axis (Weapons Activities, Other Defense Activities); T1 uses office-chart axis (Undersecretary for Science, Direct Reports). A small lookup table would let either be pivoted to the other.
+- **Office-specific volumes:** for higher-granularity drill-downs, the FY27 office-specific volumes (Science vol 4, CMEI vol 2, HGEO vol 3, etc.) are the next layer. First use case: Science Volume Drill (plan in `plans/science-volume-drill.md`).
+
+### Next direction
+
+**Science Volume Drill** — plan saved at `plans/science-volume-drill.md`. Three phases:
+- Phase 1 (T5a): Science sub-program × lab from existing Lab Tables — no new paper.
+- Phase 2 (T5b): Science Volume CBJ ingestion → sub-program tree with intramural/extramural split.
+- Phase 3: Cut analysis + viz on where the FY27 −13.9% Science cut lands.
+
+Implementation proposed to open a new line `2026MMDD_science-cut-drill` at start of Phase 1, with the data quality fixes above running in parallel via paper-add session beforehand.
 
 ---
 
@@ -65,27 +76,37 @@ Flat tidy-format, one row per (office, program_path, lab) leaf:
 
 #### Topics explored
 
-- Scoped FY26 enacted DOE budget map: granularity, budget year, direction (office→lab), use case (general literacy, not AI-tilted)
-- Discovered the DOE Nov-2025 reorganization affects the office axis — settled on post-reorg structure with per-line legacy_label crosswalks
-- Corrected source plan: FY26 BiB only contains the FY26 *request*, not enacted; FY26 enacted lives in FY27 BiB (released April 3, 2026)
-- Verified schema works against sample lab (Argonne)
+- Project scoping: FY26 enacted, DOE-only, office→program→lab axis, post-reorg structure, general literacy use case
+- DOE Nov-2025 reorganization and its impact on the office axis
+- Source document strategy correction (FY27 BiB rather than FY26 BiB for FY26 enacted figures)
+- Schema v1 design, including the legacy_label crosswalk approach
+- Review of landed T1/T2/T3 tables (reconciliation, schema, gross-vs-net surface)
+- Facility scope decision (keep all 94 LPIs with classification)
+- Gross-vs-net reconciliation deeper than the README's initial framing
+- NREL → NLR rename and verification via web search
+- Three forward directions: viz, Science cut drill, State Tables
+- Science Volume Drill plan drafted
 
 #### Findings
 
-1. **Per-line legacy crosswalk is embedded in the source.** FY27 BiB Lab Tables annotate moved activities with `(formerly X - <old office>)` directly in line item names. No separate crosswalk table needed.
-2. **Reorg is deeper than office renames.** Activities re-bundled within new offices: former Vehicle Technologies → Transportation Technologies; Bioenergy → Alternative Fuels & Feedstocks; Solar/Wind/Grid Integration → Integrated Energy Systems (all under CMEI). Multiple former-EERE programs collapse into single CMEI line items.
-3. **Brand-new FY27 offices have no FY26 enacted activity.** AIQ ($1.2B FY27 request), Office of Fusion ($10M), Strategy & Tech Roadmaps ($3M), Baseload Power ($3.5B) all show $0 for FY25 and FY26. Their FY27 funding repurposes prior-year unobligated IIJA money rather than new appropriations.
-4. **Lab Tables cover more than national labs.** ~90 facilities total: national labs + site offices + field offices + SPR caverns + cleanup sites + contractor production facilities + universities. Schema's `lab` field needs `facility_type` classification.
-5. **NNSA dominates lab dollar flows.** Top labs by FY26 enacted: Los Alamos $5.13B; Savannah River Site $3.43B; Sandia $3.21B; LLNL $2.65B; ORNL $2.21B; Office of River Protection $2.20B; Idaho National Laboratory $1.69B; NNSA Albuquerque Complex $1.29B; Pantex $1.18B; Hanford Site $1.16B. Of top 10, 6 are NNSA-driven.
+1. Per-line legacy crosswalk is embedded in the FY27 BiB Lab Tables as `(formerly X - <old office>)` annotations. No separate crosswalk table needed.
+2. NNSA dominates lab dollar flows — 6 of top 10 labs by FY26 enacted are NNSA-driven; Office of Science labs enter at rank 5+. A single budget map structurally compresses two distinct lab ecosystems.
+3. T3's office axis is the appropriation-account axis (Weapons Activities, etc.); T1's is the office-chart axis (Undersecretary for Science, etc.). A T3↔T1 join requires a small crosswalk.
+4. SWPA source-duplication bug: the DOE source PDF itself prints the SWPA subtotal twice (lines 4590-4591). Carried through T2 and T3, inflating Undesignated LPI ~$200M/yr. Per-lab reconciliation "passes" because T2 inherits the same bug.
+5. The $1.15B FY26 CMEI delta between T1 and T3 is most likely IIJA supplemental funding at the labs. Plus similar smaller deltas at Science, NE, HGEO. Total FY26 ex-PMA unexplained delta ~$1.5B, not currently documented.
+6. NREL → NLR rename effective Dec 1, 2025 — DOE Lab Tables already use the new name.
 
 #### Results
 
-- Active line established with scope, schema v1, and source manifest (this file).
-- STATUS.md project framing updated to reflect post-reorg org chart.
-- Initial workflow error: opened a branch `fy26-office-program-lab` before noticing `workflow_mode: main_only` — deleted; work moved to this main-line directory.
+- T1/T2/T3 + `data/README.md` landed mid-session from the parallel paper-add work.
+- Three raw text extracts landed in `papers/text/`.
+- This RESEARCH_LOG.md established and updated.
+- STATUS.md updated with new active line and project framing for post-reorg org chart.
+- `plans/science-volume-drill.md` drafted for follow-on implementation.
+- Initial workflow error: opened a branch `fy26-office-program-lab` before noticing `workflow_mode: main_only` in STATUS — deleted; work moved to main directory.
 
 #### Next steps
 
-- **Decide:** facility scope (national labs only vs. all-facilities-with-classification).
-- **Plan:** write extraction plan via `write-a-plan` skill — covers Lab Tables parser, leaf-row emission rules, validation checks against rollups + org totals. Likely next session.
-- **Maybe:** classification list for `facility_type` (~90 facilities). Either ad-hoc during extraction or pre-classified from the Lab Table TOC.
+- **Parallel paper-add session work:** fix SWPA dup in T2/T3 build scripts; investigate and document the FY26 CMEI/Science/NE/HGEO unreconciled deltas; add NREL→NLR README callout; add `facility_type` column to T2/T3.
+- **Next chat session:** open new line `2026MMDD_science-cut-drill`; implement Phase 1 (T5a) per `plans/science-volume-drill.md`. Audience/framing questions in the plan to be answered at start of that session.
+- **Possible side quest:** T4 (offsetting-collections lookup) — small but high-utility for gross/net normalization. Could go in this line or its own.
