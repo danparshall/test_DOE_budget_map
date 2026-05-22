@@ -22,6 +22,7 @@ Per-project configuration the skills read at runtime. Update only when the proje
 - **Active research lines:**
   - `20260521_fy27-bib-papers` — paper-ingestion line for the FY27 BiB corpus. Three docs ingested + T1/T2/T3 + README built; pending: SWPA dup fix, CMEI delta investigation, NREL→NLR README callout, facility_type column.
   - `20260521_fy26-mapping-scope` — scope and schema for the FY26 DOE budget map. v1 deliverable = T1+T2+T3+classification. Science Volume Drill plan drafted at `plans/science-volume-drill.md` for follow-on line.
+  - `20260521_science-cut-drill` — drill into where the FY27 −13.9% Office of Science cut lands at sub-program × lab level. Phase 1 (T5a from existing Lab Tables) in progress. Phase 2 (Science Volume CBJ ingestion for intramural/extramural split) committed as part of deliverable. Originating plan: `docs/active/20260521_fy26-mapping-scope/plans/science-volume-drill.md`.
 
 ## Recent sessions
 
