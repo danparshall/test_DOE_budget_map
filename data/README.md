@@ -184,6 +184,71 @@ Summing T3 office totals does NOT exactly match T1's office-level numbers. T3 is
 
 
 
+## `fy27_science_by_lab_subprogram.csv`
+
+**Source:** `papers/doe_fy27LaboratoryTables_2026.pdf`, per-lab sections (pp 4-124) — Office of Science sub-program rollup rows within each Science-funded lab. **139 rows** spanning the 35 Science-funded LPIs and 12 Science sub-programs.
+
+**Build script:** `scripts/build_fy27_science_by_lab_subprogram.py`
+
+**Extraction provenance:** Walks the text extract line-by-line; matches rollup rows whose label exactly matches one of the 12 canonical Science sub-program names (regex anchored to start-of-line, allowing leading whitespace, requiring 3 dollar values). The canonical-name approach exploits the source's consistent use of un-prefixed labels for rollup rows vs. `Research - X` or `Construction - X` prefixes for leaves — so no false matches from sub-leaves. Sub-programs that appear as single leaves without a separate rollup wrapper (Safeguards and Security - SC, Program Direction - SC, Workforce Development for Teachers & Scientists, at some labs) match the same pattern. Lab attribution uses the `Total <lab>` markers from T2's lab list.
+
+**The 12 sub-programs captured:** ASCR, BES, BER, FES, HEP, NP, Isotope R&D and Production, Accelerator R&D and Production, Workforce Development for Teachers & Scientists, Science Laboratories Infrastructure, Safeguards and Security - SC, Program Direction - SC.
+
+### Schema
+
+| Column | Type | Description |
+|---|---|---|
+| `lab_name` | str | Lab/plant/installation name (matches T2's `lpi_name` and T3's `lab_name`) |
+| `science_subprogram` | str | One of the 12 canonical sub-programs listed above |
+| `fy25_enacted_k` | int | FY 2025 enacted, $ in thousands |
+| `fy26_enacted_k` | int | FY 2026 enacted, $ in thousands |
+| `fy27_request_k` | int | FY 2027 President's Budget request, $ in thousands |
+
+### Coverage and reconciliation
+
+- 35 Science-funded labs (= T3's count of rows with `office='Science'`)
+- 12 distinct sub-programs, though no single lab carries all 12
+- 139 rows: ASCR/BES/BER/FES/HEP/NP/SLI/S&S/PD/ARDAP/WDTS/IRP rollups attributed per lab where present
+- All per-lab × per-year sums reconcile EXACTLY to T3's Science totals; global FY25/FY26/FY27 sums match T3's Science grand totals ($8.24B / $8.40B / $7.14B)
+
+### Caveat: lab-axis (gross BA) view only — extramural not captured here
+
+This is the **intramural** (lab-side) picture only — money attributed to the 17 DOE national labs plus catch-alls (`Other`, `Undesignated LPI`) plus co-located site offices. Office of Science also funds **extramural** research at universities, instrumentation grants, EFRCs, and fellowships — none of which appear in the Lab Tables source. The full Science org tree including the intramural/extramural split lives in the FY27 Science Volume CBJ (`papers/doe_fy27ScienceVolume_2026.pdf`, pending ingestion). When that lands, a companion T5b table will cover the extramural side. Until then, **this table understates Science cuts on the university side of the ledger**.
+
+Additionally, the totals here are **gross BA at the lab axis** (matching T3), not the net-discretionary view in T1. T3 FY26 Science = $8.40B; T1 FY26 Science = $8.25B; the $150M delta is IIJA supplemental funding visible in Lab Tables but not in the discretionary org-axis. The FY27 request shows little supplemental delta ($7.14B gross ≈ $7.10B net), so the headline cut is similar in either view (−$1.26B/−15.0% gross, −$1.15B/−13.9% net).
+
+### Common queries
+
+```python
+import pandas as pd
+df = pd.read_csv("data/fy27_science_by_lab_subprogram.csv")
+
+# Sub-program totals across all labs (FY26→FY27 deltas)
+sub = df.groupby("science_subprogram").agg(
+    fy26=("fy26_enacted_k","sum"),
+    fy27=("fy27_request_k","sum"),
+)
+sub["delta_k"] = sub["fy27"] - sub["fy26"]
+sub["pct_change"] = (sub["fy27"]/sub["fy26"] - 1) * 100
+sub.sort_values("pct_change")
+
+# Top labs by absolute Science cut FY26→FY27
+lab = df.groupby("lab_name").agg(
+    fy26=("fy26_enacted_k","sum"),
+    fy27=("fy27_request_k","sum"),
+)
+lab["delta_k"] = lab["fy27"] - lab["fy26"]
+lab.nsmallest(10, "delta_k")
+
+# Where does the BES cut land? (lab-level)
+df[df["science_subprogram"] == "Basic Energy Sciences"] \
+    .sort_values("fy27_request_k", ascending=False)[
+    ["lab_name", "fy26_enacted_k", "fy27_request_k"]
+]
+```
+
+---
+
 **The two CSVs answer different questions and do NOT sum to the same total.** Mixing them in a single visualization without normalization will mislead:
 
 | | FY27 total | What it measures |
@@ -197,7 +262,8 @@ The ~$8B gap is the supplements (WFTC mandatory $3.885B FY26 etc.) plus the offs
 
 ## Pending tables (not yet built)
 
-- **Per-lab × per-sub-program detail (T4)** — pages 4–124 of `doe_fy27LaboratoryTables_2026.pdf` contain sub-program detail under each office subtotal (e.g., Argonne CMEI broken down into Vehicle Tech / Hydrogen / Solar / Wind / Hydropower / etc.). T3 captures the office-level rollup; T4 would flatten the sub-program level (~3–5k rows). Deferred until a specific use case requires it.
+- **Per-lab × per-sub-program detail across ALL offices (T4)** — pages 4–124 of `doe_fy27LaboratoryTables_2026.pdf` contain sub-program detail under each office subtotal (e.g., Argonne CMEI broken down into Vehicle Tech / Hydrogen / Solar / Wind / Hydropower / etc.). T3 captures the office-level rollup. The Science-only slice landed as `fy27_science_by_lab_subprogram.csv` (T5a) for the Science Volume Drill; the full T4 covering all offices (~3–5k rows) remains deferred until a specific use case requires it.
+- **Science sub-program detail including extramural split (T5b)** — pending FY27 Science Volume CBJ paper-add. Will cover the intramural/extramural breakdown that T5a (lab-axis only) cannot.
 - **BiB headline figures table** — small (~15 rows) Defense / Non-Defense / NNSA / Science / EM / etc. table from the BiB's overview. Mostly redundant with `fy27_summary_by_org.csv` rolled up to section level; build only if convenient framing for a deliverable.
 
 ---
@@ -209,3 +275,4 @@ The ~$8B gap is the supplements (WFTC mandatory $3.885B FY26 etc.) plus the offs
 | `fy27_summary_by_org.csv` | `doe_fy27SummaryByOrg_2026.pdf` | 1–3 | tesseract OCR @ 300 DPI + manual transcription (custom-font PDF defeated pdftotext) | 76 | 30 checks: 4 nested subtotals × 3 yrs + 5 section totals × 3 yrs + grand total × 3 yrs |
 | `fy27_lab_summary.csv` | `doe_fy27LaboratoryTables_2026.pdf` | 1–3 | `pdftotext -layout` + regex | 94 | 1 check: sum of rows = printed total, × 3 yrs |
 | `fy27_lab_by_office.csv` | `doe_fy27LaboratoryTables_2026.pdf` | 4–124 | `pdftotext -layout` + regex on `Subtotal,` lines, with skip rules for nested rollups and synthetic residual rows for orphan leaves | 347 | per-lab × 3 yrs: 93 labs × 3 yrs = 279 checks (plus global sum = T2 global sum, × 3 yrs) |
+| `fy27_science_by_lab_subprogram.csv` | `doe_fy27LaboratoryTables_2026.pdf` | 4–124 | `pdftotext -layout` + regex matching the 12 canonical Science sub-program rollup names (anchored, requires 3 dollar values; leaf rows have `Research -`/`Construction -` prefixes that don't match) | 139 | per-lab × 3 yrs: 35 labs × 3 yrs = 105 checks (plus global sum = T3 Science grand total, × 3 yrs) |
