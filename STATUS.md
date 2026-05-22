@@ -20,14 +20,13 @@ Per-project configuration the skills read at runtime. Update only when the proje
 
 - **Workflow:** main_only.
 - **Active research lines:**
-  - `20260521_fy27-bib-papers` — FY27 BiB corpus line. Three docs ingested + 3 reconciled structured tables (T1 `data/fy27_summary_by_org.csv`, T2 `data/fy27_lab_summary.csv`, T3 `data/fy27_lab_by_office.csv`) + first-cut `budget_map_v0.md`. **Default pickup:** file composed §7 issue (URL in `docs/active/20260521_fy27-bib-papers/convos/20260521_fy27-bib-ingest.md`) → start v1 budget-map visualizations. Alternatives if question requires: Science JEDI (sub-program detail) or State Tables (geographic cut). See research-line RESEARCH_LOG for full options.
-  - `20260521_fy26-mapping-scope` — scope and schema for the FY26 DOE budget map. v1 schema drafted; awaiting facility-scope decision before extraction.
+  - `20260521_fy27-bib-papers` — paper-ingestion line for the FY27 BiB corpus. Three docs ingested + T1/T2/T3 + README built; pending: SWPA dup fix, CMEI delta investigation, NREL→NLR README callout, facility_type column.
+  - `20260521_fy26-mapping-scope` — scope and schema for the FY26 DOE budget map. v1 deliverable = T1+T2+T3+classification. Science Volume Drill plan drafted at `plans/science-volume-drill.md` for follow-on line.
 
 ## Recent sessions
 
-- **2026-05-21** — `20260521_fy27-bib-ingest`: ingested 3 FY27 BiB docs (incl. OCR fallback for custom-font PDF), built T1 (`data/fy27_summary_by_org.csv`, 76 rows) + T2 (`data/fy27_lab_summary.csv`, 94 rows) + T3 (`data/fy27_lab_by_office.csv`, 347 rows) all reconciled to source totals, produced first-cut `budget_map_v0.md`. ~29 commits. §7 issue composed but not filed. See `docs/active/20260521_fy27-bib-papers/convos/20260521_fy27-bib-ingest.md`.
 - **2026-05-21** — `20260521_fy27-bib-papers`: setup + naming agreement + Lab Tables URL discovery (plural form). Blocked on energy.gov sandbox allow-list propagation. Fresh chat required to ingest the three FY27 BiB starter docs. See `docs/active/20260521_fy27-bib-papers/RESEARCH_LOG.md`.
-- **2026-05-21** — `20260521_fy26-mapping-scope`: scoped FY26 budget map (post-reorg, DOE-only, office→program→lab, $49.1B total); discovered DOE Nov-2025 reorganization affects office axis; corrected source plan (FY27 BiB, not FY26 BiB); verified v1 schema against Argonne sample. Initial workflow error: opened a branch before noticing `main_only` mode — deleted and moved to main. See `docs/active/20260521_fy26-mapping-scope/RESEARCH_LOG.md`.
+- **2026-05-21** — `20260521_fy26-mapping-scope`: scoped FY26 budget map (post-reorg, DOE-only, office→program→lab, $49.1B net / $53.8B gross); reviewed landed T1/T2/T3 from parallel paper-add session; surfaced three data quality issues (SWPA source-duplication +$200M/yr at Undesignated LPI; CMEI $1.15B FY26 unreconciled delta — likely IIJA supplementals; NREL→NLR rename not yet in README); confirmed `facility_type` (8-9 categories); drafted Science Volume Drill plan (3 phases) at `docs/active/20260521_fy26-mapping-scope/plans/science-volume-drill.md` for follow-on line `2026MMDD_science-cut-drill`. Initial workflow error: opened a branch before noticing `main_only` mode — deleted and moved to main.
 
 ## Archived research lines
 
